@@ -5,7 +5,6 @@ import { matchRoutes } from "react-router-config";
 import Routes from "./client/Routes";
 import renderer from "./helpers/renderer";
 import createStore from "./helpers/createStore";
-import { loadData } from "./client/components/UsersList";
 
 const app = express();
 
@@ -15,7 +14,7 @@ app.get("*", (req, res) => {
 
   // Figures out what components would have rendered (based on URL)
   const promises = matchRoutes(Routes, req.path).map(({ route }) => {
-    return route.loadData ? loadData(store) : null; // if loadData exists, execute it. If not, do nothing
+    return route.loadData ? route.loadData(store) : null; // if loadData exists, execute it. If not, do nothing
   });
 
   Promise.all(promises).then(() => {
